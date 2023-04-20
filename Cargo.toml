@@ -23,9 +23,12 @@ tracing = { version = "0.1", features = ["log"] }
 tracing-log = "0.1"
 tracing-subscriber = { version = "0.3", features = ["registry", "env-filter"] }
 tracing-bunyan-formatter = "0.3"
-tracing-actix-web = "0.7"
 once_cell = "1"
 secrecy = { version = "0.8", features = ["serde"] }
+opentelemetry = { version = "0.18", features = ["rt-tokio", "rt-tokio-current-thread"] }
+opentelemetry-jaeger = { version = "0.17", features = ["rt-tokio", "rt-tokio-current-thread"] }
+tracing-opentelemetry = "0.18"
+tracing-actix-web = { version = "0.7", features = ["opentelemetry_0_18"] }
 
 [dependencies.sqlx]
 version = "0.6"
