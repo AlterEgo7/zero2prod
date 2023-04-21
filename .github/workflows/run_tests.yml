@@ -11,7 +11,23 @@ on:
 
 jobs:
   RunTests:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: zero2prod
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: zero2prod
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -25,6 +41,6 @@ jobs:
         run: |
           cargo test
         env:
-          DATABASE_URL: postgres://zero2prod:@localhost:5432
+          DATABASE_URL: postgres://zero2prod:postgres@localhost:5432
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
