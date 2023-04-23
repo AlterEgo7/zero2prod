@@ -1,7 +1,10 @@
-application_port: 8000
 database:
   host: "127.0.0.1"
   port: 5432
   username: zero2prod
   password: ""
   database_name: zero2prod
+
+application:
+  port: 8000
+  host: 127.0.0.1
