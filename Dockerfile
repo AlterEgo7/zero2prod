@@ -1,9 +1,18 @@
 # syntax=docker/dockerfile:1.4-labs
-FROM rust:1.69.0-slim-bookworm AS builder
+FROM lukemathwalker/cargo-chef:latest-rust-1.69-bookworm as chef
 
 WORKDIR /app
 
-RUN apt update && apt install libssl-dev pkg-config mold clang openssl -y
+RUN apt update && apt install mold clang -y
+
+FROM chef as planner
+COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
+
+FROM chef as builder
+
+COPY --from=planner /app/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json
 
 RUN mkdir -p "$HOME/.cargo"
 
@@ -16,7 +25,7 @@ EOF
 COPY . .
 
 ENV SQLX_OFFLINE true
-RUN cargo build --release
+RUN cargo build --release --bin zero2prod
 
 FROM debian:bookworm-slim AS runtime
 
