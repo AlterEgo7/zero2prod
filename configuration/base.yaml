@@ -1,5 +1,5 @@
 database:
-  host: "localhost"
+  host: "127.0.0.1"
   port: 5432
   username: zero2prod
   password: ""
@@ -7,3 +7,4 @@ database:
 
 application:
   port: 8000
+  host: 127.0.0.1
