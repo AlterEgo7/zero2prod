@@ -1,9 +1,0 @@
-database:
-  host: "localhost"
-  port: 5432
-  username: zero2prod
-  password: ""
-  database_name: zero2prod
-
-application:
-  port: 8000
