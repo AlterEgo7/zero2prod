@@ -14,7 +14,7 @@ name = "zero2prod"
 
 [dependencies]
 actix-web = "4"
-reqwest = { version = "0.11", features = ["json"] }
+reqwest = { version = "0.11", features = ["json", "rustls-tls"] }
 tokio = { version = "1", features = ["full"] }
 futures = "0.3"
 serde = { version = "1", features = ["derive"] }
@@ -33,6 +33,7 @@ tracing-opentelemetry = "0.18"
 tracing-actix-web = { version = "0.7", features = ["opentelemetry_0_18"] }
 unicode-segmentation = "1"
 validator = "0.16"
+async-trait = "0.1"
 
 [dependencies.sqlx]
 version = "0.6"
