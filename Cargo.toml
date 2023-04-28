@@ -34,6 +34,7 @@ tracing-actix-web = { version = "0.7", features = ["opentelemetry_0_18"] }
 unicode-segmentation = "1"
 validator = "0.16"
 async-trait = "0.1"
+wiremock = "0.5"
 
 [dependencies.sqlx]
 version = "0.6"
