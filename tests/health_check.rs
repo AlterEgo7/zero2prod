@@ -2,6 +2,8 @@ use std::net::TcpListener;
 
 use once_cell::sync::Lazy;
 use sqlx::PgPool;
+use zero2prod::configuration::get_configuration;
+use zero2prod::email_client::EmailClient;
 
 use zero2prod::startup::run;
 use zero2prod::telemetry::*;
@@ -27,11 +29,20 @@ pub struct TestApp {
 async fn spawn_app(connection_pool: PgPool) -> TestApp {
     Lazy::force(&TRACING);
 
+    let configuration = get_configuration().expect("Failed to read configuration");
+
     let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind random port");
     let port = listener.local_addr().unwrap().port();
     let address = format!("http://127.0.0.1:{}", port);
 
-    let server = run(listener, connection_pool.clone()).expect("Failed to bind address");
+    let sender_email = configuration
+        .email_client
+        .sender()
+        .expect("Invalid sender email");
+    let email_client = EmailClient::new(configuration.email_client.base_url, sender_email);
+
+    let server =
+        run(listener, connection_pool.clone(), email_client).expect("Failed to bind address");
 
     let _ = tokio::spawn(server);
 
