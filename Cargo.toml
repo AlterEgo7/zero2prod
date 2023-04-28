@@ -16,6 +16,7 @@ name = "zero2prod"
 actix-web = "4"
 reqwest = { version = "0.11", features = ["json"] }
 tokio = { version = "1", features = ["full"] }
+futures = "0.3"
 serde = { version = "1", features = ["derive"] }
 serde-aux = "4"
 config = "0.13"
@@ -30,6 +31,8 @@ opentelemetry = { version = "0.18", features = ["rt-tokio", "rt-tokio-current-th
 opentelemetry-jaeger = { version = "0.17", features = ["rt-tokio", "rt-tokio-current-thread"] }
 tracing-opentelemetry = "0.18"
 tracing-actix-web = { version = "0.7", features = ["opentelemetry_0_18"] }
+unicode-segmentation = "1"
+validator = "0.16"
 
 [dependencies.sqlx]
 version = "0.6"
@@ -50,3 +53,10 @@ features = [
     "fast-rng", # Use a faster (but still sufficiently random) RNG
     "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
 ]
+
+[dev-dependencies]
+claim = "0.5"
+fake = "2.5"
+quickcheck = "1.0.3"
+quickcheck_macros = "1.0.0"
+rand = "0.8"
