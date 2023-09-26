@@ -1,2 +1,6 @@
 [target.aarch64-apple-darwin]
 rustflags = ["-C", "link-arg=-fuse-ld=/opt/homebrew/Cellar/ld64.lld/64/bin/ld64.lld"]
+
+[target.x86_64-unknown-linux-gnu]
+linker = "clang"
+rustflags = ["-C", "link-arg=-fuse-ld=/home/linuxbrew/.linuxbrew/bin/mold"]
