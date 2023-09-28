@@ -1,5 +1,7 @@
 use once_cell::sync::Lazy;
 use sqlx::*;
+use url::Url;
+use wiremock::MockServer;
 
 use zero2prod::configuration::get_configuration;
 use zero2prod::startup::Application;
@@ -21,6 +23,7 @@ static TRACING: Lazy<()> = Lazy::new(|| {
 pub struct TestApp {
     pub address: String,
     pub db_pool: PgPool,
+    pub email_server: MockServer,
 }
 
 impl TestApp {
@@ -38,9 +41,12 @@ impl TestApp {
 pub async fn spawn_app(connection_pool: PgPool) -> TestApp {
     Lazy::force(&TRACING);
 
+    let email_server = MockServer::start().await;
+
     let configuration = {
         let mut c = get_configuration().expect("Failed to read configuration");
         c.application.port = 0;
+        c.email_client.base_url = Url::parse(email_server.uri().as_str()).unwrap();
         c
     };
 
@@ -55,5 +61,6 @@ pub async fn spawn_app(connection_pool: PgPool) -> TestApp {
     TestApp {
         address,
         db_pool: connection_pool,
+        email_server,
     }
 }
